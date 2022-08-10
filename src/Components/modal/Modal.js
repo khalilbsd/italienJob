@@ -11,7 +11,9 @@ import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import Draggable from 'react-draggable';
-const Modal = ({ show,hide,minimize }) => {
+import SaveIcon from '@mui/icons-material/Save';
+import Swal from "sweetalert2";
+const Modal = ({ show,hide,minimize,handleData,initilaData,editing,handleEdit,handleSave,saving }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
@@ -28,6 +30,13 @@ const Modal = ({ show,hide,minimize }) => {
   const handleAnswer =()=>{
     setAnswer(true)
     setStep(2)
+    if (!saving){
+      Swal.fire({
+        icon: 'error',
+  title: 'Oops...',
+  text: "you can't see the answer until you answer the question first",
+      })
+    }
   }
 
   return (
@@ -67,7 +76,7 @@ const Modal = ({ show,hide,minimize }) => {
           <select className={classes.input} id="title">
             {data &&
               data.map((item, index) => (
-                <option style={{ color: "black" }} value={item.value}>
+                <option key={index} style={{ color: "black" }} value={item.value}>
                   {item.name}
                 </option>
               ))}
@@ -97,19 +106,25 @@ const Modal = ({ show,hide,minimize }) => {
         </Grid>
         <Grid item xs={2}>
           <IconButton
+            onClick={!editing?handleEdit:handleSave}
             className={classes.iconBtn + " " + classes.white}
             aria-label="warning"
             size="large"
           >
-            <EditIcon />
+            {
+              !editing?
+              <EditIcon />
+              :
+              <SaveIcon/>
+            }
           </IconButton>
         </Grid>
         <Grid item xs={12}>
           <div className="modal-content">
             {step === 1 ? (
-              <SideOne content="loren ipsum step 1" />
+              <SideOne edit={editing} handleData={handleData} step={step} answer={answer} content={initilaData.answer} />
             ) : (
-              <SideOne content="loren ipsum step 2" />
+              <SideOne handleData={handleData} step={step} answer={answer} content={initilaData.rightAnswer} />
             )}
           </div>
         </Grid>
@@ -130,6 +145,7 @@ const Modal = ({ show,hide,minimize }) => {
                   classes.steps + " " + (step === 2 ? classes.stepSelected : "")
                 }
                 onClick={handleStep}
+                disabled={!saving?true:false}
               >
                 Step 2
               </button>

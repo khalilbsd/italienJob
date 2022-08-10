@@ -66,18 +66,28 @@ export const useStyles = makeStyles({
     border: "1px solid white",
   },
   modalFooter: {},
-  stepNavigation: {},
+
+  stepNavigation: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start'
+  },
   steps: {
     background:'transparent',
     borderTopRightRadius: 5,
     borderTopLeftRadius: 5,
     padding: "15px 10px",
+    color:'white',
+    border:'none',
+    '&:disabled':{
+      color:'#55657f'
+    }
     // borderBottom:'1px solid #55657f',
-    borderTop:0,
-    borderLeft:0,
-    borderRight:0,
-    color:'white'
+    //borderTop:0,
+    //borderLeft:0,
+    //borderRight:0,
   },
+
   stepSelected:{
     background:'white',
     color:'black'
@@ -131,7 +141,7 @@ export const useStyles = makeStyles({
     border:'none',
     height:'40px',
     borderTopLeftRadius:5,
-    borderTopRighttRadius:5
+    borderTopRightRadius:5
 
   }
 });

@@ -3,7 +3,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useStyles } from "./style.js";
 
-const SideOne = ({ content }) => {
+const SideOne = ({ content,answer,step,handleData,edit }) => {
   const classes = useStyles();
   const ref = useRef();
 
@@ -39,12 +39,15 @@ const SideOne = ({ content }) => {
       </div>
       <textarea
         value={content}
+        name={step===1?"answer":"rightAnswer"}
         ref={ref}
+        onChange={handleData}
         rows="4"
         cols="50"
         maxLength="1000"
         className={classes.textarea}
         placeholder="YOUR NOTES"
+        disabled={step===2 || !edit?true:false}
 
         // onChange={ev => setNote(ev.target.value)}
       />
